@@ -6,7 +6,7 @@
     "axios": "^0.18.0",
     "body-parser": "^1.19.0",
     "express": "^4.16.4",
-    "nodemon": "^1.18.11",
+    "nodemon": "^1.19.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
@@ -19,7 +19,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "node ./server/server.js",
-    "dev-server": "nodemon ./server/server.js --ignore './server/data/*.json'"
+    "dev-server": "nodemon ./server/server.js --ignore './server/data/*.json'",
+    "compile-styles-dev": "webpack-dev-server --mode development --open",
+    "build-styles": "webpack --mode production"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,5 +37,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "css-loader": "^2.1.1",
+    "mini-css-extract-plugin": "^0.6.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "4.29.6",
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1"
   }
 }
