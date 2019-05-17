@@ -1,26 +1,27 @@
 const {productsConfig} = require("./constants");
 
-const validateProductsQuery = (req, res, next) => {
+/**
+ * Function to validate Query Parameters
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const validateQueryParameters = (req, res, next) => {
 
 	const {queryAllowed, queryConfiguration} = productsConfig.query;
 
-	//Filter Noise Data
-	Object.keys(req.query).forEach(key => { if(!queryAllowed.includes(key)) delete req.query(key) });
+	//Filter Noise Data && Initial Validation
+	Object.keys(req.query).forEach(key => { 
 
-	if(req.query.hasOwnProperty("order")){
-		req.order = queryConfiguration.order.convertTo(req.query.order);
-	}
-
-	if(req.query.hasOwnProperty("brand")){
-		req.brand = queryConfiguration.brand.convertTo(req.query.brand);
-	}
-
-	if(req.query.hasOwnProperty("page")){
-		req.page = queryConfiguration.page.convertTo(req.query.page) || 1;
-	}
-
+		if(queryAllowed.includes(key)){
+			req[key] = queryConfiguration[key].validate(req.query[key]);
+		} else {
+			delete req.query(key)
+		}
+		
+	});
 
 	next();
 }
 
-module.exports.validateProductsQuery = validateProductsQuery;
+module.exports.validateQueryParameters = validateQueryParameters;

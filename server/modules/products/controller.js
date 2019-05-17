@@ -2,7 +2,7 @@ const utils = require("./../../helpers/utils");
 
 const getProducts = async (req,res) => {
 
-	const order = req.order || 0;
+	const order = req.order;
 
 	const requestConfiguration = {
 		responseType: "JSON"
@@ -20,9 +20,8 @@ const getProducts = async (req,res) => {
 		data: products
 	}
 
-	if(req.page){
-		paginateConfig = {...paginateConfig, page: req.page}
-	}
+	paginateConfig = {...paginateConfig, page: req.page}
+
 
 	const response = utils.paginateArray(paginateConfig);
 

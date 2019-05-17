@@ -3,9 +3,7 @@ const router = express.Router();
 
 const utils = require("./../../helpers/utils");
 
-
 const cartController = require("./controller");
-
 
 /**
  * Route to Get The Shopping Cart
