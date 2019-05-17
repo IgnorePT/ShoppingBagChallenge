@@ -243,10 +243,11 @@ export default class Shop extends Component {
 
 	componentDidMount(){
 
-        this.getWishlist();
         this.getCart();
         this.getBrands();
-		this.getProducts({});
+        this.getProducts({});
+        this.getWishlist();
+        
     }
     
   render() {
@@ -285,7 +286,16 @@ export default class Shop extends Component {
                    </React.Fragment>
                     )} />
                     {/* Wishlist Page */}
-                   <Route path="/wishlist" component={Wishlist} />
+                   <Route exact path="/wishlist" render={
+                       props => (
+                           <React.Fragment>
+                               <Wishlist  
+                                    wishlist={this.state.wishlist} 
+                                    cart={this.state.cart}
+                                />
+                           </React.Fragment>
+                       )
+                   }/>
                 </div>
             </main>
             <Footer />
