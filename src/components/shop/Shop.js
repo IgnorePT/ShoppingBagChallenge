@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route} from "react-router-dom";
 import axios from 'axios';
 
 import {existOnWhishlist, existOnCart} from "./../../helpers/productHelpers";
@@ -9,6 +10,7 @@ import Pagination from '../pagination/Pagination';
 
 import Header from "./../layout/header";
 import Footer from "./../layout/footer";
+import Wishlist from "./../pages/wishlist/Wishlist";
 
 export default class Shop extends Component {
 
@@ -37,7 +39,7 @@ export default class Shop extends Component {
     }
 
     /**
-     * Add Products to whislist
+     * Add Products to wishlist
      * @param {object} product Product to add to whishlist
      * Todo: Save only the product id on whishlist 
      */
@@ -56,17 +58,17 @@ export default class Shop extends Component {
     }
 
      /**
-     * Remove Product from whislist
-     * @param {array} wishlist Whislist array elements 
+     * Remove Product from wishlist
+     * @param {array} wishlist Wishlist array elements 
      * @param {Number} productId Id of product to remove
      */
     removeFromWhishlist = (wishlist, productId) => {
   
-        let filterWhislist = wishlist.filter(function(element) {
+        let filterWishlist = wishlist.filter(function(element) {
             return element["id"] !== productId;
        });
 
-       localStorage.setItem("whishlist", JSON.stringify(filterWhislist));
+       localStorage.setItem("whishlist", JSON.stringify(filterWishlist));
 
        return this.getWishlist();
     }
@@ -95,7 +97,7 @@ export default class Shop extends Component {
     }
 
     /**
-     * Remove Product from whislist
+     * Remove Product from wishlist
      * @param {Number} productId Id of product to remove
      * Todo: Check response and show errors
      */
@@ -241,46 +243,67 @@ export default class Shop extends Component {
 
 	componentDidMount(){
 
-        this.getWishlist();
         this.getCart();
         this.getBrands();
-		this.getProducts({});
+        this.getProducts({});
+        this.getWishlist();
+        
     }
     
   render() {
 	return (
-        <>
+        <Router>
         <Header 
             wishlist={this.state.wishlist} 
             cart={this.state.cart}
             removeFromCart={this.removeFromCart}
         />
-			<main className="product-page">
-            <div className="container">
-                <ProductFilter 
-                    brands={this.state.brands}
-                    onBrandSelect={this.onBrandSelect}
-                    sortByPrice={this.sortByPrice}
-                />
-
-                <ProductList 
-                    products={this.state.products} 
-                    brands={this.state.brands}
-                    whishlist={this.state.wishlist}
-                    cart={this.state.cart}
-                    addToWishlist={this.addToWishlist}
-                    addToCart={this.addToCart}                
+    
+                <main className="product-page">
+                <div className="container">
+                {/* Home Page - Product List */}
+                <Route exact path="/" render={props => ( 
+                <React.Fragment>
+                    <ProductFilter 
+                        brands={this.state.brands}
+                        onBrandSelect={this.onBrandSelect}
+                        sortByPrice={this.sortByPrice}
                     />
 
-                <Pagination 
-                    pagination={this.state.pagination}
-                    onChangePage={this.onChangePage}
-                />
+                    <ProductList 
+                        products={this.state.products} 
+                        brands={this.state.brands}
+                        whishlist={this.state.wishlist}
+                        cart={this.state.cart}
+                        addToWishlist={this.addToWishlist}
+                        addToCart={this.addToCart}                
+                        />
 
-            </div>
-        </main>
-        <Footer />
-        </>
+                    <Pagination 
+                        pagination={this.state.pagination}
+                        onChangePage={this.onChangePage}
+                    />
+                   </React.Fragment>
+                    )} />
+                    {/* Wishlist Page */}
+                   <Route exact path="/wishlist" render={
+                       props => (
+                           <React.Fragment>
+                               <Wishlist  
+                                    wishlist={this.state.wishlist} 
+                                    cart={this.state.cart}
+                                />
+                           </React.Fragment>
+                       )
+                   }/>
+                </div>
+            </main>
+            <Footer />
+         
+     
+       
+        
+        </Router>
 	)
   }
 }
