@@ -257,11 +257,12 @@ export default class Shop extends Component {
             cart={this.state.cart}
             removeFromCart={this.removeFromCart}
         />
-    {/* Home Page - Product List */}
-        <Route exact path="/" render={props => ( 
-            <React.Fragment>
+    
                 <main className="product-page">
                 <div className="container">
+                {/* Home Page - Product List */}
+                <Route exact path="/" render={props => ( 
+                <React.Fragment>
                     <ProductFilter 
                         brands={this.state.brands}
                         onBrandSelect={this.onBrandSelect}
@@ -281,14 +282,17 @@ export default class Shop extends Component {
                         pagination={this.state.pagination}
                         onChangePage={this.onChangePage}
                     />
-
+                   </React.Fragment>
+                    )} />
+                    {/* Wishlist Page */}
+                   <Route path="/wishlist" component={Wishlist} />
                 </div>
             </main>
-            </React.Fragment>
-        )} />
-        {/* Wishlist Page */}
-        <Route path="/wishlist" component={Wishlist} />
-        <Footer />
+            <Footer />
+         
+     
+       
+        
         </Router>
 	)
   }

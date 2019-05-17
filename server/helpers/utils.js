@@ -25,6 +25,7 @@ module.exports.readFile = readFile;
 /**
  * Funtion to read info from file and 
  * @param {String} filepath Path of the file to read (ex: "./data/test.json")
+ * @param {*} data Information to write on file;
  * @param {Object} options Optional parameters
  */
 const writeFile = (filepath, data, options) =>{
@@ -34,7 +35,10 @@ const writeFile = (filepath, data, options) =>{
 	return fs.writeFile(filepath, data, encoding, (err) => {
 		if(err) throw err
 
-		return "Success"
+		return {
+			code: 0,
+			message: "Success"
+		}
 	});
 }
 
@@ -59,7 +63,6 @@ const paginateArray = (config) => {
 	let pageNumber = config.page || 1,
 	elementsPerPage = config.elementsPerPage || 6,
   	offset = (pageNumber - 1) * elementsPerPage,
- 
   	paginatedElements = info.slice(offset).slice(0, elementsPerPage),
 	totalPages = Math.ceil(info.length / elementsPerPage);
 	  
@@ -87,7 +90,7 @@ const sortProducts = (products, order) => {
 		return products;
 	}
 
-	return products.sort((a, b) => {
+	products.sort((a, b) => {
 
 		(a.hasOwnProperty("priceDiscounted")) ? a.sortPrice = a.priceDiscounted : a.sortPrice = a.price;
 		(b.hasOwnProperty("priceDiscounted")) ? b.sortPrice = b.priceDiscounted : b.sortPrice = b.price; 
@@ -97,6 +100,10 @@ const sortProducts = (products, order) => {
 		} else {
 			return b.sortPrice-a.sortPrice;
 		}
-	});	
+	});
+
+	delete products.sortPrice;
+
+	return products;
 }
 module.exports.sortProducts = sortProducts;
